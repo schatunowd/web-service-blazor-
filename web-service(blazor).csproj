@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>web_service_blazor_</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleApp1ML.ConsoleApp\ConsoleApp1ML.ConsoleApp.csproj" />
+    <ProjectReference Include="..\ConsoleApp1ML.Model\ConsoleApp1ML.Model.csproj" />
+    <ProjectReference Include="..\Parser\KinopoiskParser.csproj" />
+  </ItemGroup>
+
+</Project>

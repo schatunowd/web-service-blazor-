@@ -1,0 +1,76 @@
+﻿@page "/"
+@using KinopoiskParser
+
+<form>
+
+    <div class="form-group">
+        <label for="validationCustom01" class="form-label">Фильм</label>
+        <input class="form-control" @onchange="UpdateText" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите название" required>
+        <div class="valid-feedback">
+            Все хорошо!
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Год</label>
+        <input class="form-control" @onchange="UpdateText" id="exampleInputPassword1" placeholder="Введите год выхода фильма">
+        <small id="emailHelp" class="form-text text-muted">Это необязательное поле</small>
+    </div>
+
+    <div class="col-4">
+        <button class="btn btn-primary" id="sendbutton" type="submit" @onclick="GetData" disabled=@isLoading>Получить результат</button>
+    </div>
+
+    @if (isLoading)
+    {
+        <p>Обработка ответов...</p>
+    }
+    else if (answers == null || answers.Count == 0)
+    {
+        <p>no data</p>
+    }
+    else
+    {
+        for (var i = 0; i < answers.Count; i++)
+        {
+            <p><b>#@(i + 1):</b> @answers[@i]</p>
+        }
+    }
+
+
+    @code {
+        private List<string>? answers = null;
+        private bool isLoading = false;
+        public string Text { get; set; }
+
+        private void UpdateText(ChangeEventArgs e)
+        {
+            Text += e.Value.ToString() + " ";
+        }
+
+
+        private async Task GetData()
+        {
+            isLoading = true;
+            answers = new List<string>();
+                Data.Exec.GetScore(Text, out answers);
+                StateHasChanged();
+                await Task.Delay(112);
+                isLoading = false;
+        }
+    }
+
+@*    @if (answers.Count != 0)
+    {
+        <p>Полученная оценка: @answers[0]</p>
+        <p>Всего отзывов: @answers[1]</p>
+        <p>Негативных: @answers[2]</p>
+        <p>Положительных: @answers[3]</p>
+    }
+    else
+    {
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    }*@
+</form>

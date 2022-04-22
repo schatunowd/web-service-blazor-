@@ -4,26 +4,26 @@
 <form>
 
     <div class="form-group">
-        <label for="validationCustom01" class="form-label">Фильм</label>
-        <input class="form-control" @onchange="UpdateText" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите название" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
+        <label class="form-label">Фильм</label>
+        <input type="text" class="form-control" @bind="@filmname" placeholder="Введите название" required>
     </div>
 
     <div class="form-group">
-        <label for="exampleInputPassword1">Год</label>
-        <input class="form-control" @onchange="UpdateText" id="exampleInputPassword1" placeholder="Введите год выхода фильма">
-        <small id="emailHelp" class="form-text text-muted">Это необязательное поле</small>
+        <label>Год</label>
+        <input type="text" class="form-control" @bind="@year" placeholder="Введите год выхода фильма">
+        <small class="form-text text-muted">Это необязательное поле</small>
     </div>
 
     <div class="col-4">
         <button class="btn btn-primary" id="sendbutton" type="submit" @onclick="GetData" disabled=@isLoading>Получить результат</button>
     </div>
 
-    @if (isLoading)
+    @if (check == 0)
     {
-        <p>Обработка ответов...</p>
+        <p>Loading [@answers?.Count] ...</p>
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
     }
     else if (answers == null || answers.Count == 0)
     {
@@ -31,46 +31,90 @@
     }
     else
     {
-        for (var i = 0; i < answers.Count; i++)
-        {
-            <p><b>#@(i + 1):</b> @answers[@i]</p>
-        }
+        <p>Полученная оценка: @answers[0]</p>
+        <p>Всего отзывов: @answers[1]</p>
+        <p>Положительных: @answers[2]</p>
+        <p>Негативных: @answers[3]</p>
     }
-
 
     @code {
         private List<string>? answers = null;
         private bool isLoading = false;
-        public string Text { get; set; }
-
-        private void UpdateText(ChangeEventArgs e)
-        {
-            Text += e.Value.ToString() + " ";
-        }
-
+        private string filmname = "";
+        private string year = "";
+        private int check = 1;
 
         private async Task GetData()
         {
+            check = 0;
             isLoading = true;
+            string Text = "защитники";
+            //string Text = filmname + " " + year;
+            StateHasChanged();
             answers = new List<string>();
-                Data.Exec.GetScore(Text, out answers);
-                StateHasChanged();
-                await Task.Delay(112);
-                isLoading = false;
+            await Task.FromResult(default(object));
+            Data.Exec.GetScore(Text, out answers);
+            isLoading = false;
+            check = 1;
         }
     }
 
-@*    @if (answers.Count != 0)
-    {
-        <p>Полученная оценка: @answers[0]</p>
-        <p>Всего отзывов: @answers[1]</p>
-        <p>Негативных: @answers[2]</p>
-        <p>Положительных: @answers[3]</p>
-    }
-    else
-    {
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    }*@
+
+    @*@if (isLoading)
+        {
+            <p>Обработка ответов...</p>
+        }
+
+        @if (answers == null || answers.Count == 0)
+        {
+            <p>Ошибка сервиса</p>
+        }
+        else
+        {
+            for (var i = 0; i < answers.Count; i++)
+            {
+                <p><b>#@(i + 1):</b> @answers[@i]</p>
+            }
+        }
+
+
+        @code {
+            private List<string>? answers = null;
+            private bool isLoading = false;
+            public string Text { get; set; }
+
+            private void UpdateText(ChangeEventArgs e)
+            {
+                Text += e.Value.ToString() + " ";
+            }
+
+
+            private async Task GetData()
+            {
+                isLoading = true;
+                answers = new List<string>(4);
+                answers.Add("1");
+                answers.Add("2");
+                answers.Add("3");
+                answers.Add("4");
+                //Data.Exec.GetScore(Text, out answers);
+                StateHasChanged();
+                await Task.Delay(11200);
+                isLoading = false;
+            }
+        }*@
+
+    @*    @if (answers.Count != 0)
+        {
+            <p>Полученная оценка: @answers[0]</p>
+            <p>Всего отзывов: @answers[1]</p>
+            <p>Негативных: @answers[2]</p>
+            <p>Положительных: @answers[3]</p>
+        }
+        else
+        {
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        }*@
 </form>

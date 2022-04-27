@@ -1,4 +1,4 @@
-﻿using ConsoleApp1ML.Model;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +20,10 @@ namespace web_service_blazor_.Data
             }
             return all_str;
         }
-        public static void GetScore(string FilmName, out List <string> alldata)
+        public static async Task<List<string>> GetScoreAsync(string FilmName)
         {
-            List<string> comments = KinopoiskParser.Program.ParserExec(FilmName, false);
+            List<string> alldata = new List<string>();
+            List<string> comments = await Program.ParserExec(FilmName, false);
             List<string> scores = new List<string>();
             List<string> comments_new = Norm(comments);
             List<string> positive = new List<string>();
@@ -52,6 +53,7 @@ namespace web_service_blazor_.Data
             alldata.Add(scores.Count.ToString());
             alldata.Add(positive.Count.ToString());
             alldata.Add(negative.Count.ToString());
+            return (alldata);
         }
     }
 }

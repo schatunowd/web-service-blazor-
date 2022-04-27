@@ -40,23 +40,26 @@
     @code {
         private List<string>? answers = null;
         private bool isLoading = false;
-        private string filmname = "";
-        private string year = "";
+        public string filmname = "";
+        public string year = "";
         private int check = 1;
 
         private async Task GetData()
         {
             check = 0;
             isLoading = true;
-            string Text = "защитники";
-            //string Text = filmname + " " + year;
-            StateHasChanged();
-            answers = new List<string>();
-            await Task.FromResult(default(object));
-            Data.Exec.GetScore(Text, out answers);
-            isLoading = false;
-            check = 1;
-        }
+            string Text = "конец света";
+           @* if (year != "")
+                Text = filmname + " " + year;
+            else
+                Text = filmname;*@
+        answers = new List<string>();
+        check = 0;
+        answers = await Data.Exec.GetScoreAsync(Text);
+        isLoading = false;
+        check = 1;
+        StateHasChanged();
+    }
     }
 
 

@@ -1,11 +1,9 @@
 ﻿@page "/"
-@using KinopoiskParser
 
 <form>
-
     <div class="form-group">
         <label class="form-label">Фильм</label>
-        <input type="text" class="form-control" @bind="@filmname" placeholder="Введите название" required>
+        <input type="text" class="form-control" @bind="@filmname"  placeholder="Введите название" required>
     </div>
 
     <div class="form-group">
@@ -25,7 +23,8 @@
             <span class="sr-only">Loading...</span>
         </div>
     }
-    else if (answers == null || answers.Count == 0)
+
+    @if (answers == null || answers.Count == 0)
     {
         <p>no data</p>
     }
@@ -43,25 +42,25 @@
         public string filmname = "";
         public string year = "";
         private int check = 1;
+        private string Text = "";
 
         private async Task GetData()
         {
             check = 0;
             isLoading = true;
-            string Text = "конец света";
-           @* if (year != "")
+            //string Text = "конец света";
+            if (year != "")
                 Text = filmname + " " + year;
             else
-                Text = filmname;*@
-        answers = new List<string>();
-        check = 0;
-        answers = await Data.Exec.GetScoreAsync(Text);
-        isLoading = false;
-        check = 1;
-        StateHasChanged();
+                Text = filmname;
+            answers = new List<string>();
+            check = 0;
+            answers = await Data.Exec.GetScoreAsync(Text);
+            isLoading = false;
+            check = 1;
+        }
     }
-    }
-
+</form>
 
     @*@if (isLoading)
         {
@@ -120,4 +119,3 @@
                 <span class="sr-only">Loading...</span>
             </div>
         }*@
-</form>

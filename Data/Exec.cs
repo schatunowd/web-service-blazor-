@@ -53,7 +53,8 @@ namespace web_service_blazor_.Data
             alldata.Add(scores.Count.ToString());
             alldata.Add(positive.Count.ToString());
             alldata.Add(negative.Count.ToString());
-            return (alldata);
+            //Dictionary<string, double> scoresDictionary = ExecIvi.Exec(FilmName);
+            return alldata;
         }
     }
 }

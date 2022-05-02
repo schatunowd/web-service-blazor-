@@ -1,6 +1,5 @@
 ﻿@page "/"
 
-<form>
     <div class="form-group">
         <label class="form-label">Фильм</label>
         <input type="text" class="form-control" @bind="@filmname"  placeholder="Введите название" required>
@@ -34,6 +33,10 @@
         <p>Всего отзывов: @answers[1]</p>
         <p>Положительных: @answers[2]</p>
         <p>Негативных: @answers[3]</p>
+        @if (answers[4].Length > 0)
+         {
+            <p>Больше всего зрителям понравилось: @answers[4]</p>
+         }
     }
 
     @code {
@@ -60,7 +63,6 @@
             check = 1;
         }
     }
-</form>
 
     @*@if (isLoading)
         {
